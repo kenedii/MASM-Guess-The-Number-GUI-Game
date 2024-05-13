@@ -84,12 +84,12 @@ IDM_OPTIONS_EXPLAINHC equ 3
   gamemodeString db "&Game Mode",0
   helpString     db "&Help",0
   howtoplayString db "&How to Play",0
-  htpMsg         DB "Simply guess a number by clicking on it.",13,10,0
-                 DB "You have 3 attempts to guess correctly.",13,10,0
+  htpMsg         DB "Simply guess a number by clicking on it.",13,10
+                 DB "You have 3 attempts to guess correctly.",13,10
                  DB "If you guess correctly, you get a point!",0
   htpMsgHeader   db "How to Play", 0
-  hchtpMsg       DB "In hardcore mode, you only have one life.",13,10,0
-                 DB "If you don't guess correctly in 3 attempts,",13,10,0
+  hchtpMsg       DB "In hardcore mode, you only have one life.",13,10
+                 DB "If you don't guess correctly in 3 attempts,",13,10
                  DB "your entire score will be reset.",0
   hchtpMsgHeader DB "How to Play Hardcore Mode", 0
     
@@ -343,7 +343,7 @@ IDM_OPTIONS_EXPLAINHC equ 3
             invoke MessageBeep, MB_ICONINFORMATION
 
         .elseif wParam == IDM_OPTIONS_HTP      ; When the user clicks on 'How to Play'
-            invoke    MessageBox,hWin,ADDR htpMsg,ADDR htpMsgHeader,MB_OK
+            INVOKE MessageBox, hWin, ADDR htpMsg, ADDR htpMsgHeader, MB_OK or MB_SETFOREGROUND or MB_ICONINFORMATION
 
         .elseif wParam == IDM_OPTIONS_EXPLAINHC
             invoke    MessageBox,hWin,ADDR hchtpMsg,ADDR hchtpMsgHeader,MB_OK
