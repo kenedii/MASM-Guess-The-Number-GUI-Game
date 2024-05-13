@@ -15,7 +15,8 @@ cdTX3Pos     EQU  120          ; Constant double X-Position subwindow for the te
 cdTXSize1    EQU  30           ; Constant double X-size of the subwindow for the text
 cdTYSize1    EQU  30           ; Constant double Y-size of the subwindow for the text
 
-scoreXPos     EQU  360          ; Constant double X-Position subwindow for the text 
+scoreXPos     EQU  360          ; Constant double X-Position subwindow for the text
+scoreTXSize1    EQU  30           ; Constant double X-size of the subwindow for the text 
 
 .data
 wc1            WNDCLASSEX  <>
@@ -67,9 +68,7 @@ PrngGet PROC range:DWORD             ; Generate a pseudo-random number in range 
 
 PrngGet ENDP
 
-to_string PROC ascbuf:DWORD,number:DWORD                ; Convert a decimal to ascii, result in eax
- mov eax, number
- lea edi, ascbuf
+to_string PROC                ; Convert a decimal to ascii, result in eax
  mov ebx, 10
  xor ecx, ecx
 
@@ -159,20 +158,16 @@ clear_attempts ENDP
 
 display_scoreI PROC hanWin:HWND    ; call this first to initialize the score to 0
  INVOKE    CreateWindowEx, cdSubType1, ADDR szStatic1, addr playersScoreA, cdVCarText1,\ 
-                  scoreXPos, cdTYPos1, cdTXSize1, cdTYSize1, hanWin,\
+                  scoreXPos, cdTYPos1, scoreTXSize1, cdTYSize1, hanWin,\
                   500, wc1.hInstance, NULL                         ; Display the user's score
  mov scoreHandle, eax              ; Move the handle for the score subwindow to memory
  ret
 display_scoreI ENDP
 
-display_score PROC hanWin:HWND, score:DWORD ; call this to update the score after initialization
- push score
- push offset playersScoreA
+display_score PROC score:DWORD ; call this to update the score after initialization
+ mov eax, score
+ lea edi, playersScoreA
  call to_string                    ; Convert the decimal score to ascii representation
- INVOKE    DestroyWindow, scoreHandle   ; Delete the old player's score subwindow
- INVOKE    CreateWindowEx, cdSubType1, ADDR szStatic1, OFFSET playersScoreA, cdVCarText1,\ 
-                  scoreXPos, cdTYPos1, cdTXSize1, cdTYSize1, hanWin,\
-                  500, wc1.hInstance, NULL                         ; Update the user's score
- mov scoreHandle, eax              ; Move the handle for the score subwindow to memory
+ INVOKE SetWindowText, scoreHandle, ADDR playersScoreA
  ret
 display_score ENDP

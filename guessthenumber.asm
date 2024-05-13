@@ -58,7 +58,7 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
   rct           RECT        <NULL, NULL, NULL, NULL>
 
  attemptsText DB "Attempts",0
- scoreText    DB "Score",0
+ scoreText    DB "Score:",0
  playerScore  DD 0       ; How many numbers the player guessed correctly
 
 ; Text to display on the buttons
@@ -162,6 +162,8 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
         .if       wParam == idBtnMensa             ; If the first button is pressed
             .if winningNumber == 0
                  add playerScore, 1                ; Increment player's score by 1
+                 push playerScore
+                 call display_score                ; Update the player's score if they win
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
                  call clear_attempts               ; Reset the users attempts when they win
                  call newWinningNumber
@@ -175,6 +177,8 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
         .elseif   wParam == idBtnMensa+1           ; Check for the second button
             .if winningNumber == 1
                  add playerScore, 1                ; Increment player's score by 1
+                 push playerScore
+                 call display_score
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
                  call clear_attempts
                  call newWinningNumber
@@ -187,6 +191,8 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
         .elseif   wParam == idBtnMensa+2           
             .if winningNumber == 2
                  add playerScore, 1                ; Increment player's score by 1
+                 push playerScore
+                 call display_score
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
                  call clear_attempts
                  call newWinningNumber
