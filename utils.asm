@@ -36,7 +36,9 @@ PrngGet PROC range:DWORD             ; Generate a pseudo-random number in range 
 
 PrngGet ENDP
 
-to_string PROC                     ; Convert a decimal to ascii
+to_string PROC number:DWORD, ascbuf:DWORD                  ; Convert a decimal to ascii, result in eax
+ mov eax, number
+ lea edi, ascbuf
  mov ebx, 10
  xor ecx, ecx
 
