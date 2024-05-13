@@ -401,10 +401,12 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
                   cdTXPos, cdTYPos, cdTXSize, cdTYSize, hWin,\
                   500, wc.hInstance, NULL
 
-        ; Create the subwindow for the text (Attempts)
+        ; Create the subwindow for the text (Score)
         INVOKE    CreateWindowEx, cdSubType, ADDR szStatic, ADDR scoreText, cdVCarText,\ 
                   cdTXPoss, cdTYPoss, cdTXSizes, cdTYSizes, hWin,\
                   500, wc.hInstance, NULL
+
+        call display_scoreI ; Create score subwindow, initialize at zero.
 
 
     .elseif   uMsg == WM_DESTROY

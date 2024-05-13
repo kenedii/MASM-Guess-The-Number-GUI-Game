@@ -9,13 +9,13 @@ cdTXPos1     EQU  80           ; Constant double X-Position subwindow for the te
 cdTYPos1     EQU  170          ; Constant double Y-Position subwindow for the text
 
 cdTX2Pos     EQU  100          ; Constant double X-Position subwindow for the text 
-cdTY2Pos     EQU  170          ; Constant double Y-Position subwindow for the text 
 
 cdTX3Pos     EQU  120          ; Constant double X-Position subwindow for the text 
-cdTY3Pos     EQU  170          ; Constant double Y-Position subwindow for the text 
  
 cdTXSize1    EQU  30           ; Constant double X-size of the subwindow for the text
 cdTYSize1    EQU  30           ; Constant double Y-size of the subwindow for the text
+
+scoreXPos     EQU  330          ; Constant double X-Position subwindow for the text 
 
 .data
 wc1            WNDCLASSEX  <>
@@ -32,6 +32,8 @@ hWndX1 HANDLE ?
 hWndX2 HANDLE ?
 hWndX3 HANDLE ?
 
+scoreHandle HANDLE ?
+playersScoreA DB ?        ; Buffer to store the player's score in ascii
 
 
 .code
@@ -109,7 +111,7 @@ increment_attempts PROC hanWin:HWND
 
 newGame:
  INVOKE    CreateWindowEx, cdSubType1, ADDR szStatic1, ADDR XText, cdVCarText1,\ 
-                  cdTX3Pos, cdTY3Pos, cdTXSize1, cdTYSize1, hanWin,\
+                  cdTX3Pos, cdTYPos1, cdTXSize1, cdTYSize1, hanWin,\
                   500, wc1.hInstance, NULL                           ; Display the 3rd 'X' on the screen
  mov hWndX3, eax    ; Move the file handle into memory so it can be deleted later.
  invoke    MessageBox,hanWin,ADDR winMsgL,ADDR winMsgHeaderL,MB_OK  ; Show a losing OK message box
@@ -136,7 +138,7 @@ continueGame:
 
  two:
  INVOKE    CreateWindowEx, cdSubType1, ADDR szStatic1, ADDR XText, cdVCarText1,\ 
-                  cdTX2Pos, cdTY2Pos, cdTXSize1, cdTYSize1, hanWin,\
+                  cdTX2Pos, cdTYPos1, cdTXSize1, cdTYSize1, hanWin,\
                   500, wc1.hInstance, NULL                           ; Display the second 'X' on the screen
  mov hWndX2, eax
  mov eax, 0
@@ -154,3 +156,24 @@ clear_attempts PROC ; This is called when the user correctly guesses the number 
  INVOKE    DestroyWindow, hWndX3   ; Destroy the third 'X' window
  ret
 clear_attempts ENDP
+
+display_scoreI PROC ; call this first to initialize the score to 0
+ push 0
+ push playersScoreA
+ call to_string                    ; Convert the decimal score to ascii representation
+ INVOKE    CreateWindowEx, cdSubType1, ADDR szStatic1, ADDR playersScoreA, cdVCarText1,\ 
+                  scoreXPos, cdTYPos1, cdTXSize1, cdTYSize1, hanWin,\
+                  500, wc1.hInstance, NULL                         ; Display the user's score
+ mov scoreHandle, eax              ; Move the handle for the score subwindow to memory
+ ret
+display_scoreI ENDP
+
+display_score PROC score:DD ; call this to update the score after initialization
+ push score
+ push playersScoreA
+ call to_string                    ; Convert the decimal score to ascii representation
+ INVOKE    DestroyWindow, scoreHandle   ; Delete the old player's score subwindow
+ INVOKE    CreateWindowEx, cdSubType1, ADDR szStatic1, ADDR playersScoreA, cdVCarText1,\ 
+                  scoreXPos, cdTYPos1, cdTXSize1, cdTYSize1, hanWin,\
+                  500, wc1.hInstance, NULL                         ; Update the user's score
+display_score ENDP
