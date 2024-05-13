@@ -90,7 +90,7 @@ IDM_OPTIONS_EXPLAINHC equ 3
   htpMsgHeader   db "How to Play", 0
   hchtpMsg       DB "In hardcore mode, you only have one life.",13,10
                  DB "If you don't guess correctly in 3 attempts,",13,10
-                 DB "your entire score will be reset.",0
+                 DB "your entire score will be reset. Good luck!",0
   hchtpMsgHeader DB "How to Play Hardcore Mode", 0
     
 
@@ -346,7 +346,7 @@ IDM_OPTIONS_EXPLAINHC equ 3
             INVOKE MessageBox, hWin, ADDR htpMsg, ADDR htpMsgHeader, MB_OK or MB_SETFOREGROUND or MB_ICONINFORMATION
 
         .elseif wParam == IDM_OPTIONS_EXPLAINHC
-            invoke    MessageBox,hWin,ADDR hchtpMsg,ADDR hchtpMsgHeader,MB_OK
+            invoke MessageBox, hWin, ADDR hchtpMsg, ADDR hchtpMsgHeader, MB_OK or MB_SETFOREGROUND or MB_ICONINFORMATION
             
         .endif
 
