@@ -5,17 +5,17 @@ MakeFont PROTO :DWORD,:DWORD,:DWORD,:DWORD,:DWORD
 ; X Text subwindow
 cdVCarText1  EQU  WS_CHILD + WS_VISIBLE + SS_CENTER
 cdSubType1   EQU  NULL         ; Subwindow type (flat-NULL, 3D-1, etc.)
-cdTXPos1     EQU  70           ; Constant double X-Position subwindow for the text 
+cdTXPos1     EQU  80           ; Constant double X-Position subwindow for the text 
 cdTYPos1     EQU  170          ; Constant double Y-Position subwindow for the text
 
-cdTX2Pos     EQU  90           ; Constant double X-Position subwindow for the text 
+cdTX2Pos     EQU  100          ; Constant double X-Position subwindow for the text 
 cdTY2Pos     EQU  170          ; Constant double Y-Position subwindow for the text 
 
-cdTX3Pos     EQU  110          ; Constant double X-Position subwindow for the text 
+cdTX3Pos     EQU  120          ; Constant double X-Position subwindow for the text 
 cdTY3Pos     EQU  170          ; Constant double Y-Position subwindow for the text 
  
-cdTXSize    EQU  60; Constant double X-size of the subwindow for the text
-cdTYSize    EQU  40           ; Constant double Y-size of the subwindow for the text
+cdTXSize1    EQU  30           ; Constant double X-size of the subwindow for the text
+cdTYSize1    EQU  30           ; Constant double Y-size of the subwindow for the text
 
 .data
 wc1            WNDCLASSEX  <>
@@ -31,6 +31,7 @@ XText DB "X",0
 hWndX1 HANDLE ?
 hWndX2 HANDLE ?
 hWndX3 HANDLE ?
+
 
 
 .code
@@ -108,7 +109,7 @@ increment_attempts PROC hanWin:HWND
 
 newGame:
  INVOKE    CreateWindowEx, cdSubType1, ADDR szStatic1, ADDR XText, cdVCarText1,\ 
-                  cdTX3Pos, cdTY3Pos, cdTXSize, cdTYSize, hanWin,\
+                  cdTX3Pos, cdTY3Pos, cdTXSize1, cdTYSize1, hanWin,\
                   500, wc1.hInstance, NULL                           ; Display the 3rd 'X' on the screen
  mov hWndX3, eax    ; Move the file handle into memory so it can be deleted later.
  invoke    MessageBox,hanWin,ADDR winMsgL,ADDR winMsgHeaderL,MB_OK  ; Show a losing OK message box
@@ -127,7 +128,7 @@ continueGame:
 
  one:
  INVOKE    CreateWindowEx, cdSubType1, ADDR szStatic1, ADDR XText, cdVCarText1,\ 
-                  cdTXPos1, cdTYPos1, cdTXSize, cdTYSize, hanWin,\
+                  cdTXPos1, cdTYPos1, cdTXSize1, cdTYSize1, hanWin,\
                   500, wc1.hInstance, NULL                           ; Display the first 'X' on the screen
  mov hWndX1, eax    ; Move the file handle into memory so it can be deleted later.
  mov eax, 0
@@ -135,7 +136,7 @@ continueGame:
 
  two:
  INVOKE    CreateWindowEx, cdSubType1, ADDR szStatic1, ADDR XText, cdVCarText1,\ 
-                  cdTX2Pos, cdTY2Pos, cdTXSize, cdTYSize, hanWin,\
+                  cdTX2Pos, cdTY2Pos, cdTXSize1, cdTYSize1, hanWin,\
                   500, wc1.hInstance, NULL                           ; Display the second 'X' on the screen
  mov hWndX2, eax
  mov eax, 0

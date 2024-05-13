@@ -87,7 +87,7 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
   hButton9    DD ?
   hButton10   DD ?
 
-  winningNumber DD ?
+ winningNumber DD ?
 
 .CODE
   start:
@@ -96,9 +96,7 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
     INVOKE    GetCommandLine
     MOV       CommandLine, EAX
 
-    push 9
-    call PrngGet
-    mov [winningNumber], eax
+    call newWinningNumber ; Generates a new pseudorandom number and stores in [winningNumber]
 
     INVOKE    WinMain, wc.hInstance, NULL, CommandLine, SW_SHOWDEFAULT
     INVOKE    ExitProcess, EAX
@@ -164,8 +162,11 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
         .if       wParam == idBtnMensa             ; If the first button is pressed
             .if winningNumber == 0
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
-            .else
+            .else                                  ; If winningNumber is not 0
                  invoke increment_attempts, hWin
+                 .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call newWinningNumber
+                 .endif
             .endif
             
         .elseif   wParam == idBtnMensa+1           ; Check for the second button
@@ -340,5 +341,12 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
     invoke    DefWindowProc,hWin,uMsg,wParam,lParam
     ret
   WndProc endp
+
+newWinningNumber PROC   ; Generates a new pseudorandom number and stores in [winningNumber]
+ push 9
+ call PrngGet
+ mov [winningNumber], eax
+ ret
+newWinningNumber ENDP
 
 END start
