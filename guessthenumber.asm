@@ -7,9 +7,10 @@ OPTION      casemap:none
 INCLUDE     \masm32\include\windows.inc      ; Includes definitions of structures and constants
 INCLUDE     \masm32\include\user32.inc       ; Includes the most common usage prototypes
 INCLUDE     \masm32\include\kernel32.inc     ; Includes the most common usage prototypes
+INCLUDE     \masm32\include\gdi32.inc       
+INCLUDE     utils.asm
 INCLUDELIB  \masm32\lib\user32.lib       ; Imports libraries for the linker to work
 INCLUDELIB  \masm32\lib\kernel32.lib     ; Imports libraries for the linker to work
-INCLUDE     \masm32\include\gdi32.inc       
 INCLUDELIB  \masm32\lib\gdi32.lib        ; Imports libraries for the linker to work
 
 ; Main window
