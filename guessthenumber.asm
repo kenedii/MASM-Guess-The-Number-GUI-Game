@@ -161,14 +161,49 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
     ; Destroy: None
     .if       uMsg == WM_COMMAND
         .if       wParam == idBtnMensa             ; If the first button is pressed
-            .if winningNumber == 1
+            .if winningNumber == 0
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
             .endif
             
         .elseif   wParam == idBtnMensa+1           ; Check for the second button
+            .if winningNumber == 1
+                 invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+            .endif
+        .elseif   wParam == idBtnMensa+2           
             .if winningNumber == 2
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
             .endif
+        .elseif   wParam == idBtnMensa+3           
+            .if winningNumber == 3
+                 invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+            .endif
+        .elseif   wParam == idBtnMensa+4           
+            .if winningNumber == 4
+                 invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+            .endif
+        .elseif   wParam == idBtnMensa+5           
+            .if winningNumber == 5
+                 invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+            .endif
+        .elseif   wParam == idBtnMensa+6           
+            .if winningNumber == 6
+                 invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+            .endif
+        .elseif   wParam == idBtnMensa+7           
+            .if winningNumber == 7
+                 invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+            .endif
+        .elseif   wParam == idBtnMensa+8           
+            .if winningNumber == 8
+                 invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+            .endif
+        .elseif   wParam == idBtnMensa+9             ; Last button check (For number 10)           
+            .if winningNumber == 9
+                 invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+            .endif
+        
+
+
         .endif
         
     .elseif   uMsg == WM_CREATE
