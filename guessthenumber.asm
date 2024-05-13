@@ -39,7 +39,7 @@ cdSubType   EQU  NULL         ; Subwindow type (flat-NULL, 3D-1, etc.)
 ; 'Score' Text subwindow
 cdTXPoss     EQU  310           ; Constant double X-Position subwindow for the text 
 cdTYPoss     EQU  170          ; Constant double Y-Position subwindow for the text 
-cdTXSizes    EQU  60; Constant double X-size of the subwindow for the text
+cdTXSizes    EQU  50; Constant double X-size of the subwindow for the text
 cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the text
 
 
@@ -406,6 +406,7 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
                   cdTXPoss, cdTYPoss, cdTXSizes, cdTYSizes, hWin,\
                   500, wc.hInstance, NULL
 
+        push hWin
         call display_scoreI ; Create score subwindow, initialize at zero.
 
 

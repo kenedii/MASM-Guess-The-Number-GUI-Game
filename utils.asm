@@ -15,7 +15,7 @@ cdTX3Pos     EQU  120          ; Constant double X-Position subwindow for the te
 cdTXSize1    EQU  30           ; Constant double X-size of the subwindow for the text
 cdTYSize1    EQU  30           ; Constant double Y-size of the subwindow for the text
 
-scoreXPos     EQU  330          ; Constant double X-Position subwindow for the text 
+scoreXPos     EQU  360          ; Constant double X-Position subwindow for the text 
 
 .data
 wc1            WNDCLASSEX  <>
@@ -67,7 +67,7 @@ PrngGet PROC range:DWORD             ; Generate a pseudo-random number in range 
 
 PrngGet ENDP
 
-to_string PROC number:DWORD, ascbuf:DWORD                  ; Convert a decimal to ascii, result in eax
+to_string PROC ascbuf:DWORD,number:DWORD                ; Convert a decimal to ascii, result in eax
  mov eax, number
  lea edi, ascbuf
  mov ebx, 10
@@ -157,9 +157,9 @@ clear_attempts PROC ; This is called when the user correctly guesses the number 
  ret
 clear_attempts ENDP
 
-display_scoreI PROC ; call this first to initialize the score to 0
- push 0
- push playersScoreA
+display_scoreI PROC hanWin:HWND    ; call this first to initialize the score to 0
+ push 0d
+ push offset playersScoreA
  call to_string                    ; Convert the decimal score to ascii representation
  INVOKE    CreateWindowEx, cdSubType1, ADDR szStatic1, ADDR playersScoreA, cdVCarText1,\ 
                   scoreXPos, cdTYPos1, cdTXSize1, cdTYSize1, hanWin,\
@@ -168,9 +168,9 @@ display_scoreI PROC ; call this first to initialize the score to 0
  ret
 display_scoreI ENDP
 
-display_score PROC score:DD ; call this to update the score after initialization
+display_score PROC hanWin:HWND, score:DWORD ; call this to update the score after initialization
  push score
- push playersScoreA
+ push offset playersScoreA
  call to_string                    ; Convert the decimal score to ascii representation
  INVOKE    DestroyWindow, scoreHandle   ; Delete the old player's score subwindow
  INVOKE    CreateWindowEx, cdSubType1, ADDR szStatic1, ADDR playersScoreA, cdVCarText1,\ 
