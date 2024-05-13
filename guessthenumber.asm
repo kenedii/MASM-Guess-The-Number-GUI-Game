@@ -205,6 +205,8 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
         .elseif   wParam == idBtnMensa+3           
             .if winningNumber == 3
                  add playerScore, 1                ; Increment player's score by 1
+                 push playerScore
+                 call display_score
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
                  call clear_attempts
                  call newWinningNumber
@@ -217,6 +219,8 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
         .elseif   wParam == idBtnMensa+4           
             .if winningNumber == 4
                  add playerScore, 1                ; Increment player's score by 1
+                 push playerScore
+                 call display_score
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
                  call clear_attempts
                  call newWinningNumber
@@ -229,6 +233,8 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
         .elseif   wParam == idBtnMensa+5           
             .if winningNumber == 5
                  add playerScore, 1                ; Increment player's score by 1
+                 push playerScore
+                 call display_score
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
                  call clear_attempts
                  call newWinningNumber
@@ -241,6 +247,8 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
         .elseif   wParam == idBtnMensa+6           
             .if winningNumber == 6
                  add playerScore, 1                ; Increment player's score by 1
+                 push playerScore
+                 call display_score
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
                  call clear_attempts
                  call newWinningNumber
@@ -253,6 +261,8 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
         .elseif   wParam == idBtnMensa+7           
             .if winningNumber == 7
                  add playerScore, 1                ; Increment player's score by 1
+                 push playerScore
+                 call display_score
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
                  call clear_attempts
                  call newWinningNumber
@@ -265,6 +275,8 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
         .elseif   wParam == idBtnMensa+8           
             .if winningNumber == 8
                  add playerScore, 1                ; Increment player's score by 1
+                 push playerScore
+                 call display_score
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
                  call clear_attempts
                  call newWinningNumber
@@ -277,6 +289,8 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
         .elseif   wParam == idBtnMensa+9             ; Last button check (For number 10)           
             .if winningNumber == 9
                  add playerScore, 1                ; Increment player's score by 1
+                 push playerScore
+                 call display_score
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
                  call clear_attempts
                  call newWinningNumber
