@@ -161,7 +161,9 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
     .if       uMsg == WM_COMMAND
         .if       wParam == idBtnMensa             ; If the first button is pressed
             .if winningNumber == 0
+                 add playerScore, 1                ; Increment player's score by 1
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call newWinningNumber
             .else                                  ; If winningNumber is not 0
                  invoke increment_attempts, hWin
                  .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
@@ -171,39 +173,102 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
             
         .elseif   wParam == idBtnMensa+1           ; Check for the second button
             .if winningNumber == 1
+                 add playerScore, 1                ; Increment player's score by 1
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call newWinningNumber
+            .else                                  ; If winningNumber is not 1
+                 invoke increment_attempts, hWin
+                 .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call newWinningNumber
+                 .endif
             .endif
         .elseif   wParam == idBtnMensa+2           
             .if winningNumber == 2
+                 add playerScore, 1                ; Increment player's score by 1
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call newWinningNumber
+            .else                                  
+                 invoke increment_attempts, hWin
+                 .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call newWinningNumber
+                 .endif
             .endif
         .elseif   wParam == idBtnMensa+3           
             .if winningNumber == 3
+                 add playerScore, 1                ; Increment player's score by 1
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call newWinningNumber
+            .else                                  
+                 invoke increment_attempts, hWin
+                 .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call newWinningNumber
+                 .endif
             .endif
         .elseif   wParam == idBtnMensa+4           
             .if winningNumber == 4
+                 add playerScore, 1                ; Increment player's score by 1
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call newWinningNumber
+            .else                                  
+                 invoke increment_attempts, hWin
+                 .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call newWinningNumber
+                 .endif
             .endif
         .elseif   wParam == idBtnMensa+5           
             .if winningNumber == 5
+                 add playerScore, 1                ; Increment player's score by 1
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call newWinningNumber
+            .else                                 
+                 invoke increment_attempts, hWin
+                 .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call newWinningNumber
+                 .endif
             .endif
         .elseif   wParam == idBtnMensa+6           
             .if winningNumber == 6
+                 add playerScore, 1                ; Increment player's score by 1
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call newWinningNumber
+            .else                                  
+                 invoke increment_attempts, hWin
+                 .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call newWinningNumber
+                 .endif
             .endif
         .elseif   wParam == idBtnMensa+7           
             .if winningNumber == 7
+                 add playerScore, 1                ; Increment player's score by 1
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call newWinningNumber
+            .else                                  
+                 invoke increment_attempts, hWin
+                 .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call newWinningNumber
+                 .endif
             .endif
         .elseif   wParam == idBtnMensa+8           
             .if winningNumber == 8
+                 add playerScore, 1                ; Increment player's score by 1
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call newWinningNumber
+            .else                                  
+                 invoke increment_attempts, hWin
+                 .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call newWinningNumber
+                 .endif
             .endif
         .elseif   wParam == idBtnMensa+9             ; Last button check (For number 10)           
             .if winningNumber == 9
+                 add playerScore, 1                ; Increment player's score by 1
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call newWinningNumber
+            .else                                  
+                 invoke increment_attempts, hWin
+                 .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call newWinningNumber
+                 .endif
             .endif
         
 
