@@ -16,7 +16,6 @@ cdTXSize1    EQU  30           ; Constant double X-size of the subwindow for the
 cdTYSize1    EQU  30           ; Constant double Y-size of the subwindow for the text
 
 scoreXPos     EQU  360          ; Constant double X-Position subwindow for the text
-scoreTXSize1    EQU  30           ; Constant double X-size of the subwindow for the text 
 
 .data
 wc1            WNDCLASSEX  <>
@@ -36,6 +35,7 @@ hWndX3 HANDLE ?
 scoreHandle HANDLE ?
 playersScoreA DB "0",0        ; Buffer to store the player's score in ascii
 
+hardcoreON dword 0 ; hardcoreON=1 if hardcore mode is on
 
 .code
 
@@ -68,7 +68,7 @@ PrngGet PROC range:DWORD             ; Generate a pseudo-random number in range 
 
 PrngGet ENDP
 
-to_string PROC                ; Convert a decimal to ascii, result in eax
+to_string PROC                ; Convert a decimal to ascii
  mov ebx, 10
  xor ecx, ecx
 
@@ -119,6 +119,16 @@ newGame:
  INVOKE    DestroyWindow, hWndX1   ; Destroy the first 'X' window
  INVOKE    DestroyWindow, hWndX2   ; Destroy the second 'X' window
  INVOKE    DestroyWindow, hWndX3   ; Destroy the third 'X' window
+ cmp hardcoreON, 1
+ je hcON
+ jne hcOFF
+
+hcON:
+ call clear_score
+ mov eax, 1
+ jmp go_back
+ 
+hcOFF:
  mov eax, 1         ; We check if eax=1 in the main code file to determine if we need a new random number.
  jmp go_back 
 
@@ -156,9 +166,17 @@ clear_attempts PROC ; This is called when the user correctly guesses the number 
  ret
 clear_attempts ENDP
 
+clear_score PROC ; Sets the users score back to 0 and displays 0 as their score
+ mov eax, 0
+ lea edi, playersScoreA
+ call to_string                    ; Convert the decimal score to ascii representation
+ INVOKE SetWindowText, scoreHandle, ADDR playersScoreA
+ ret
+clear_score ENDP
+
 display_scoreI PROC hanWin:HWND    ; call this first to initialize the score to 0
  INVOKE    CreateWindowEx, cdSubType1, ADDR szStatic1, addr playersScoreA, cdVCarText1,\ 
-                  scoreXPos, cdTYPos1, scoreTXSize1, cdTYSize1, hanWin,\
+                  scoreXPos, cdTYPos1, cdTXSize1, cdTYSize1, hanWin,\
                   500, wc1.hInstance, NULL                         ; Display the user's score
  mov scoreHandle, eax              ; Move the handle for the score subwindow to memory
  ret
@@ -171,3 +189,11 @@ display_score PROC score:DWORD ; call this to update the score after initializat
  INVOKE SetWindowText, scoreHandle, ADDR playersScoreA
  ret
 display_score ENDP
+
+hardcoreToggle PROC newValue:DWORD    ; Sets the value of hardcoreON to 0 or 1, depending on the button user clicks
+ call clear_attempts     ; Reset the player's attempts counter
+ call clear_score        ; Clear the player's score when changing gamemodes
+ mov eax, newValue
+ mov [hardcoreON], eax
+ ret
+hardcoreToggle ENDP
