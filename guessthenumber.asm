@@ -338,6 +338,7 @@ IDM_OPTIONS_EXPLAINHC equ 3
             .endif
 
         .elseif wParam == IDM_OPTIONS_NORMAL    ; Set gamemode to Normal
+            mov hcToggle, 0
             mov playerScore, 0
             push 0
             call hardcoreToggle
@@ -346,6 +347,7 @@ IDM_OPTIONS_EXPLAINHC equ 3
             invoke MessageBeep, MB_ICONINFORMATION
 
         .elseif wParam == IDM_OPTIONS_HARD      ; Set gamemode to Hard
+            mov hcToggle, 1
             mov playerScore, 0
             push 1
             call hardcoreToggle
