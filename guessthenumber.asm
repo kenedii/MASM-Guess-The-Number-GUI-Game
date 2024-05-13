@@ -80,7 +80,7 @@ IDM_OPTIONS_EXPLAINHC equ 3
 
 ; Text to display on the GameMode/Help Menus
   NormalString   db "&Normal",0
-  HardString     db "&HardCore",0
+  HardString     db "&Hardcore",0
   gamemodeString db "&Game Mode",0
   helpString     db "&Help",0
   howtoplayString db "&How to Play",0
@@ -318,10 +318,24 @@ IDM_OPTIONS_EXPLAINHC equ 3
                  .endif
             .endif
 
+        .elseif wParam == IDM_OPTIONS_NORMAL    ; Set gamemode to Normal
+            mov playerScore, 0
+            push 0
+            call hardcoreToggle
+            invoke CheckMenuItem, hMenuGameMode, IDM_OPTIONS_NORMAL, MF_CHECKED    ; Check 'Normal' option
+            invoke CheckMenuItem, hMenuGameMode, IDM_OPTIONS_HARD, MF_UNCHECKED   ; Uncheck 'Hardcore' option
+            invoke MessageBeep, MB_ICONINFORMATION
 
+        .elseif wParam == IDM_OPTIONS_HARD      ; Set gamemode to Hard
+            mov playerScore, 0
+            push 1
+            call hardcoreToggle
+            invoke CheckMenuItem, hMenuGameMode, IDM_OPTIONS_HARD, MF_CHECKED      ; Check 'Hardcore' option
+            invoke CheckMenuItem, hMenuGameMode, IDM_OPTIONS_NORMAL, MF_UNCHECKED ; Uncheck 'Normal' option
+            invoke MessageBeep, MB_ICONINFORMATION
         .endif
         
-    .elseif   uMsg == WM_CREATE
+    .elseif   uMsg == WM_CREATE              ; Creates buttons and text in the game
                                                                     
                                              ; Create the first button
         invoke    CreateWindowEx,WS_EX_LEFT,
@@ -458,13 +472,12 @@ IDM_OPTIONS_EXPLAINHC equ 3
         mov hMenuHelp, eax
         
         invoke AppendMenuA, hMenubar, MF_POPUP, hMenuGameMode, addr gamemodeString ; Display 'GameMode' in menu
-        invoke AppendMenuA, hMenuGameMode, MF_STRING, IDM_OPTIONS_NORMAL, ADDR NormalString
-	  invoke AppendMenuA, hMenuGameMode, MF_STRING, IDM_OPTIONS_HARD, ADDR HardString
-        invoke CheckMenuRadioItem, hMenuGameMode, IDM_OPTIONS_NORMAL, IDM_OPTIONS_HARD, MF_BYCOMMAND
-        
+        invoke AppendMenuA, hMenuGameMode, MF_STRING or MF_CHECKED, IDM_OPTIONS_NORMAL, ADDR NormalString ; Set 'Normal' option checked
+	  invoke AppendMenuA, hMenuGameMode, MF_STRING, IDM_OPTIONS_HARD, ADDR HardString ; 'Hardcore' option
+                
         invoke AppendMenuA, hMenubar, MF_POPUP, hMenuHelp, addr helpString ; Display 'Help' in menu 
-        invoke AppendMenuA, hMenuHelp, MF_STRING, IDM_OPTIONS_NORMAL, ADDR howtoplayString
-	  invoke AppendMenuA, hMenuHelp, MF_STRING, IDM_OPTIONS_HARD, ADDR HardString
+        invoke AppendMenuA, hMenuHelp, MF_STRING, IDM_OPTIONS_HTP, ADDR howtoplayString
+	  invoke AppendMenuA, hMenuHelp, MF_STRING, IDM_OPTIONS_EXPLAINHC, ADDR HardString
 
         INVOKE SetMenu, hWin, hMenubar ; Set menu
         

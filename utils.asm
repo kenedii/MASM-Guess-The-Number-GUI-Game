@@ -35,6 +35,7 @@ hWndX3 HANDLE ?
 scoreHandle HANDLE ?
 playersScoreA DB "0",0        ; Buffer to store the player's score in ascii
 
+hardcoreON dword 0 ; hardcoreON=1 if hardcore mode is on
 
 .code
 
@@ -155,6 +156,14 @@ clear_attempts PROC ; This is called when the user correctly guesses the number 
  ret
 clear_attempts ENDP
 
+clear_score PROC ; Sets the users score back to 0 and displays 0 as their score
+ mov eax, 0
+ lea edi, playersScoreA
+ call to_string                    ; Convert the decimal score to ascii representation
+ INVOKE SetWindowText, scoreHandle, ADDR playersScoreA
+ ret
+clear_score ENDP
+
 display_scoreI PROC hanWin:HWND    ; call this first to initialize the score to 0
  INVOKE    CreateWindowEx, cdSubType1, ADDR szStatic1, addr playersScoreA, cdVCarText1,\ 
                   scoreXPos, cdTYPos1, cdTXSize1, cdTYSize1, hanWin,\
@@ -170,3 +179,11 @@ display_score PROC score:DWORD ; call this to update the score after initializat
  INVOKE SetWindowText, scoreHandle, ADDR playersScoreA
  ret
 display_score ENDP
+
+hardcoreToggle PROC newValue:DWORD    ; Sets the value of hardcoreON to 0 or 1, depending on the button user clicks
+ call clear_attempts     ; Reset the player's attempts counter
+ call clear_score        ; Clear the player's score when changing gamemodes
+ mov eax, newValue
+ mov [hardcoreON], eax
+ ret
+hardcoreToggle ENDP
