@@ -176,4 +176,6 @@ display_score PROC score:DD ; call this to update the score after initialization
  INVOKE    CreateWindowEx, cdSubType1, ADDR szStatic1, ADDR playersScoreA, cdVCarText1,\ 
                   scoreXPos, cdTYPos1, cdTXSize1, cdTYSize1, hanWin,\
                   500, wc1.hInstance, NULL                         ; Update the user's score
+ mov scoreHandle, eax              ; Move the handle for the score subwindow to memory
+ ret
 display_score ENDP
