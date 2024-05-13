@@ -33,7 +33,7 @@ hWndX2 HANDLE ?
 hWndX3 HANDLE ?
 
 scoreHandle HANDLE ?
-playersScoreA DB ?        ; Buffer to store the player's score in ascii
+playersScoreA DB "0",0        ; Buffer to store the player's score in ascii
 
 
 .code
@@ -158,10 +158,7 @@ clear_attempts PROC ; This is called when the user correctly guesses the number 
 clear_attempts ENDP
 
 display_scoreI PROC hanWin:HWND    ; call this first to initialize the score to 0
- push 0d
- push offset playersScoreA
- call to_string                    ; Convert the decimal score to ascii representation
- INVOKE    CreateWindowEx, cdSubType1, ADDR szStatic1, ADDR playersScoreA, cdVCarText1,\ 
+ INVOKE    CreateWindowEx, cdSubType1, ADDR szStatic1, addr playersScoreA, cdVCarText1,\ 
                   scoreXPos, cdTYPos1, cdTXSize1, cdTYSize1, hanWin,\
                   500, wc1.hInstance, NULL                         ; Display the user's score
  mov scoreHandle, eax              ; Move the handle for the score subwindow to memory
@@ -173,7 +170,7 @@ display_score PROC hanWin:HWND, score:DWORD ; call this to update the score afte
  push offset playersScoreA
  call to_string                    ; Convert the decimal score to ascii representation
  INVOKE    DestroyWindow, scoreHandle   ; Delete the old player's score subwindow
- INVOKE    CreateWindowEx, cdSubType1, ADDR szStatic1, ADDR playersScoreA, cdVCarText1,\ 
+ INVOKE    CreateWindowEx, cdSubType1, ADDR szStatic1, OFFSET playersScoreA, cdVCarText1,\ 
                   scoreXPos, cdTYPos1, cdTXSize1, cdTYSize1, hanWin,\
                   500, wc1.hInstance, NULL                         ; Update the user's score
  mov scoreHandle, eax              ; Move the handle for the score subwindow to memory
