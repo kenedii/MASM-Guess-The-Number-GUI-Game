@@ -8,7 +8,7 @@ INCLUDE     \masm32\include\windows.inc      ; Includes definitions of structure
 INCLUDE     \masm32\include\user32.inc       ; Includes the most common usage prototypes
 INCLUDE     \masm32\include\kernel32.inc     ; Includes the most common usage prototypes
 INCLUDE     \masm32\include\gdi32.inc       
-INCLUDE     utils.asm
+INCLUDE     utils.asm                    ; PrngGet, to_string
 INCLUDELIB  \masm32\lib\user32.lib       ; Imports libraries for the linker to work
 INCLUDELIB  \masm32\lib\kernel32.lib     ; Imports libraries for the linker to work
 INCLUDELIB  \masm32\lib\gdi32.lib        ; Imports libraries for the linker to work
@@ -48,8 +48,8 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
   ClassName     DB          "SimpleWinClass", 0
   MsgHeader     DB          "Guess The Number", 0
   MsgError      DB          "Initial load failed.",0
-  icoMsg1       DB          "100% programmed in assembly (Masm)",0
-  icoMsgHeader  db          "Information", 0
+  winMsg1       DB          "You guessed the number!",0
+  winMsgHeader  db          "Congratulations!", 0
   ButtonClass   db          "BUTTON", 0
   blnk1         db          0
   szTNRoman     DB          "Times New Roman",0
@@ -84,14 +84,21 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
   hButton7    DD ?
   hButton8    DD ?
   hButton9    DD ?
-  hButton10    DD ?
-  
+  hButton10   DD ?
+
+  winningNumber DD ?
+
 .CODE
   start:
     INVOKE    GetModuleHandle, NULL
     MOV       wc.hInstance, EAX
     INVOKE    GetCommandLine
     MOV       CommandLine, EAX
+
+    push 9
+    call PrngGet
+    mov [winningNumber], eax
+
     INVOKE    WinMain, wc.hInstance, NULL, CommandLine, SW_SHOWDEFAULT
     INVOKE    ExitProcess, EAX
 
@@ -153,11 +160,17 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
     ; Output : None
     ; Destroy: None
     .if       uMsg == WM_COMMAND
-        .if       wParam == idBtnMensa
-            invoke    MessageBox,hWin,ADDR icoMsg1,ADDR icoMsgHeader,MB_OK
-        .elseif   wParam == idBtnMensa+1   ; Check for the second button
-            ; Handle click on the second button (add code as needed)
+        .if       wParam == idBtnMensa             ; If the first button is pressed
+            .if winningNumber == 1
+                 invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+            .endif
+            
+        .elseif   wParam == idBtnMensa+1           ; Check for the second button
+            .if winningNumber == 2
+                 invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+            .endif
         .endif
+        
     .elseif   uMsg == WM_CREATE
         invoke    MakeFont,38,8,700,FALSE,ADDR szTNRoman
         mov       vdTNRoman, eax    ; <<<<<< DELETE this font on EXIT
