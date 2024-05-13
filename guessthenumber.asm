@@ -16,8 +16,8 @@ INCLUDELIB  \masm32\lib\gdi32.lib        ; Imports libraries for the linker to w
 ; Main window
 cdXPos      EQU  128         ; Double X-Position constant of the window (top-left corner)
 cdYPos      EQU  128         ; Double Y-Position constant of the window (top-left corner)
-cdXSize     EQU  500         ; Double X-size constant of the window
-cdYSize     EQU  300         ; Double Y-size constant of the window
+cdXSize     EQU  450         ; Double X-size constant of the window
+cdYSize     EQU  250         ; Double Y-size constant of the window
 cdColFondo  EQU  COLOR_BTNFACE + 1  ; Background color of the window: button face gray
 cdVIcono    EQU  IDI_APPLICATION ; Window icon, see Resource.H
 cdVCursor   EQU  IDC_ARROW   ; Cursor for the window
