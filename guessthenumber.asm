@@ -196,6 +196,7 @@ IDM_OPTIONS_EXPLAINHC equ 3
             .else                                  ; If winningNumber is not 0
                  invoke increment_attempts, hWin
                  .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call resetScoreHC              ; Resets the players score if HC mode is on.
                     call newWinningNumber
                  .endif
             .endif
@@ -211,6 +212,7 @@ IDM_OPTIONS_EXPLAINHC equ 3
             .else                                  ; If winningNumber is not 1
                  invoke increment_attempts, hWin
                  .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call resetScoreHC
                     call newWinningNumber
                  .endif
             .endif
@@ -225,6 +227,7 @@ IDM_OPTIONS_EXPLAINHC equ 3
             .else                                  
                  invoke increment_attempts, hWin
                  .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call resetScoreHC
                     call newWinningNumber
                  .endif
             .endif
@@ -239,6 +242,7 @@ IDM_OPTIONS_EXPLAINHC equ 3
             .else                                  
                  invoke increment_attempts, hWin
                  .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call resetScoreHC
                     call newWinningNumber
                  .endif
             .endif
@@ -253,6 +257,7 @@ IDM_OPTIONS_EXPLAINHC equ 3
             .else                                  
                  invoke increment_attempts, hWin
                  .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call resetScoreHC
                     call newWinningNumber
                  .endif
             .endif
@@ -267,6 +272,7 @@ IDM_OPTIONS_EXPLAINHC equ 3
             .else                                 
                  invoke increment_attempts, hWin
                  .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call resetScoreHC
                     call newWinningNumber
                  .endif
             .endif
@@ -281,6 +287,7 @@ IDM_OPTIONS_EXPLAINHC equ 3
             .else                                  
                  invoke increment_attempts, hWin
                  .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call resetScoreHC
                     call newWinningNumber
                  .endif
             .endif
@@ -295,6 +302,7 @@ IDM_OPTIONS_EXPLAINHC equ 3
             .else                                  
                  invoke increment_attempts, hWin
                  .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call resetScoreHC
                     call newWinningNumber
                  .endif
             .endif
@@ -309,6 +317,7 @@ IDM_OPTIONS_EXPLAINHC equ 3
             .else                                  
                  invoke increment_attempts, hWin
                  .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call resetScoreHC
                     call newWinningNumber
                  .endif
             .endif
@@ -323,6 +332,7 @@ IDM_OPTIONS_EXPLAINHC equ 3
             .else                                  
                  invoke increment_attempts, hWin
                  .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call resetScoreHC
                     call newWinningNumber
                  .endif
             .endif
