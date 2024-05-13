@@ -163,6 +163,8 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
         .if       wParam == idBtnMensa             ; If the first button is pressed
             .if winningNumber == 0
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+            .else
+                 invoke increment_attempts, hWin
             .endif
             
         .elseif   wParam == idBtnMensa+1           ; Check for the second button
@@ -207,8 +209,7 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
         .endif
         
     .elseif   uMsg == WM_CREATE
-        invoke    MakeFont,38,8,700,FALSE,ADDR szTNRoman
-        mov       vdTNRoman, eax    ; <<<<<< DELETE this font on EXIT
+                                                                    
                                              ; Create the first button
         invoke    CreateWindowEx,WS_EX_LEFT,
                           ADDR ButtonClass,
@@ -339,15 +340,4 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
     ret
   WndProc endp
 
-  MakeFont proc hgt:DWORD,wid:DWORD,weight:DWORD,italic:DWORD,lpFontName:DWORD
-    ; Purpose: Creates the font
-    ; Input  : hgt:DWORD,wid:DWORD,weight:DWORD,italic:DWORD,lpFontName:DWORD
-    ; Output : None
-    ; Destroy: None
-    invoke CreateFont,hgt,wid,NULL,NULL,weight,italic,NULL,NULL,
-                      DEFAULT_CHARSET,OUT_TT_PRECIS,CLIP_DEFAULT_PRECIS,
-                      PROOF_QUALITY,DEFAULT_PITCH or FF_DONTCARE,
-                      lpFontName
-    ret
-  MakeFont endp
 END start

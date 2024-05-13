@@ -1,9 +1,37 @@
 ; THIS FILE CONTAINS CERTAIN PROCEDURES NEEDED FOR GUESSTHENUMBER
 ; TO FUNCTION PROPERLY.
 
+MakeFont PROTO :DWORD,:DWORD,:DWORD,:DWORD,:DWORD
+; X Text subwindow
+cdVCarText1  EQU  WS_CHILD + WS_VISIBLE + SS_CENTER
+cdSubType1   EQU  NULL         ; Subwindow type (flat-NULL, 3D-1, etc.)
+cdTXPos1     EQU  70           ; Constant double X-Position subwindow for the text 
+cdTYPos1     EQU  170          ; Constant double Y-Position subwindow for the text
+
+cdTX2Pos     EQU  90           ; Constant double X-Position subwindow for the text 
+cdTY2Pos     EQU  170          ; Constant double Y-Position subwindow for the text 
+
+cdTX3Pos     EQU  110          ; Constant double X-Position subwindow for the text 
+cdTY3Pos     EQU  170          ; Constant double Y-Position subwindow for the text 
+ 
+cdTXSize    EQU  60; Constant double X-size of the subwindow for the text
+cdTYSize    EQU  40           ; Constant double Y-size of the subwindow for the text
+
 .data
+wc1            WNDCLASSEX  <>
+szStatic1      DB          "STATIC", 0
+
 prng_x  DD 0 ; calculation state
 prng_a  DD 1099433 ; current seed
+noAttempts DD 0 ; Number of guess attempts the user has made
+winMsgL       DB          "You ran out of guesses!",0
+winMsgHeaderL  db          "You lose.", 0
+XText DB "X",0
+
+hWndX1 HANDLE ?
+hWndX2 HANDLE ?
+hWndX3 HANDLE ?
+
 
 .code
 
@@ -59,3 +87,61 @@ to_string PROC number:DWORD, ascbuf:DWORD                  ; Convert a decimal t
   
  ret
 to_string ENDP
+
+MakeFont PROC hgt:DWORD,wid:DWORD,weight:DWORD,italic:DWORD,lpFontName:DWORD
+    ; Purpose: Creates the font
+    ; Input  : hgt:DWORD,wid:DWORD,weight:DWORD,italic:DWORD,lpFontName:DWORD
+    ; Output : None
+    ; Destroy: None
+    invoke CreateFont,hgt,wid,NULL,NULL,weight,italic,NULL,NULL,
+                      DEFAULT_CHARSET,OUT_TT_PRECIS,CLIP_DEFAULT_PRECIS,
+                      PROOF_QUALITY,DEFAULT_PITCH or FF_DONTCARE,
+                      lpFontName
+    ret
+MakeFont ENDP
+
+increment_attempts PROC hanWin:HWND
+ add noAttempts, 1  ; Add one to the number of attempts
+ cmp noAttempts, 3  ; Compare it with 3
+ je newGame         ; If newGame = 3, start new game
+ jl continueGame    ; Else we continue
+
+newGame:
+ INVOKE    CreateWindowEx, cdSubType1, ADDR szStatic1, ADDR XText, cdVCarText1,\ 
+                  cdTX3Pos, cdTY3Pos, cdTXSize, cdTYSize, hanWin,\
+                  500, wc1.hInstance, NULL                           ; Display the 3rd 'X' on the screen
+ mov hWndX3, eax    ; Move the file handle into memory so it can be deleted later.
+ invoke    MessageBox,hanWin,ADDR winMsgL,ADDR winMsgHeaderL,MB_OK  ; Show a losing OK message box
+ mov [noAttempts], 0
+ ; Clear the 3 X's on the screen when the user clicks OK
+ INVOKE    DestroyWindow, hWndX1   ; Destroy the first 'X' window
+ INVOKE    DestroyWindow, hWndX2   ; Destroy the second 'X' window
+ INVOKE    DestroyWindow, hWndX3   ; Destroy the third 'X' window
+ mov eax, 1         ; We check if eax=1 in the main code file to determine if we need a new random number.
+ jmp go_back 
+
+continueGame:
+ cmp noAttempts, 1
+ je one             ; If noAttempts = 1, jmp to one
+ jne two            ; Else jump to 2
+
+ one:
+ INVOKE    CreateWindowEx, cdSubType1, ADDR szStatic1, ADDR XText, cdVCarText1,\ 
+                  cdTXPos1, cdTYPos1, cdTXSize, cdTYSize, hanWin,\
+                  500, wc1.hInstance, NULL                           ; Display the first 'X' on the screen
+ mov hWndX1, eax    ; Move the file handle into memory so it can be deleted later.
+ mov eax, 0
+ jmp go_back
+
+ two:
+ INVOKE    CreateWindowEx, cdSubType1, ADDR szStatic1, ADDR XText, cdVCarText1,\ 
+                  cdTX2Pos, cdTY2Pos, cdTXSize, cdTYSize, hanWin,\
+                  500, wc1.hInstance, NULL                           ; Display the second 'X' on the screen
+ mov hWndX2, eax
+ mov eax, 0
+ jmp go_back
+
+go_back:
+
+ ret
+increment_attempts ENDP
