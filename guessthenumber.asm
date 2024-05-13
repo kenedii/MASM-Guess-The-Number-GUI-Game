@@ -59,6 +59,7 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
 
  attemptsText DB "Attempts",0
  scoreText    DB "Score",0
+ playerScore  DD 0       ; How many numbers the player guessed correctly
 
 ; Text to display on the buttons
   MsgText       DB          "1",0
