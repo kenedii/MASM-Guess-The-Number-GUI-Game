@@ -163,6 +163,7 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
             .if winningNumber == 0
                  add playerScore, 1                ; Increment player's score by 1
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call clear_attempts               ; Reset the users attempts when they win
                  call newWinningNumber
             .else                                  ; If winningNumber is not 0
                  invoke increment_attempts, hWin
@@ -175,6 +176,7 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
             .if winningNumber == 1
                  add playerScore, 1                ; Increment player's score by 1
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call clear_attempts
                  call newWinningNumber
             .else                                  ; If winningNumber is not 1
                  invoke increment_attempts, hWin
@@ -186,6 +188,7 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
             .if winningNumber == 2
                  add playerScore, 1                ; Increment player's score by 1
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call clear_attempts
                  call newWinningNumber
             .else                                  
                  invoke increment_attempts, hWin
@@ -197,6 +200,7 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
             .if winningNumber == 3
                  add playerScore, 1                ; Increment player's score by 1
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call clear_attempts
                  call newWinningNumber
             .else                                  
                  invoke increment_attempts, hWin
@@ -208,6 +212,7 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
             .if winningNumber == 4
                  add playerScore, 1                ; Increment player's score by 1
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call clear_attempts
                  call newWinningNumber
             .else                                  
                  invoke increment_attempts, hWin
@@ -219,6 +224,7 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
             .if winningNumber == 5
                  add playerScore, 1                ; Increment player's score by 1
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call clear_attempts
                  call newWinningNumber
             .else                                 
                  invoke increment_attempts, hWin
@@ -230,6 +236,7 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
             .if winningNumber == 6
                  add playerScore, 1                ; Increment player's score by 1
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call clear_attempts
                  call newWinningNumber
             .else                                  
                  invoke increment_attempts, hWin
@@ -241,6 +248,7 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
             .if winningNumber == 7
                  add playerScore, 1                ; Increment player's score by 1
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call clear_attempts
                  call newWinningNumber
             .else                                  
                  invoke increment_attempts, hWin
@@ -252,6 +260,7 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
             .if winningNumber == 8
                  add playerScore, 1                ; Increment player's score by 1
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call clear_attempts
                  call newWinningNumber
             .else                                  
                  invoke increment_attempts, hWin
@@ -263,6 +272,7 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
             .if winningNumber == 9
                  add playerScore, 1                ; Increment player's score by 1
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call clear_attempts
                  call newWinningNumber
             .else                                  
                  invoke increment_attempts, hWin
@@ -270,7 +280,6 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
                     call newWinningNumber
                  .endif
             .endif
-        
 
 
         .endif

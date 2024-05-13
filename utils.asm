@@ -146,3 +146,11 @@ go_back:
 
  ret
 increment_attempts ENDP
+
+clear_attempts PROC ; This is called when the user correctly guesses the number to clear their guesses
+ mov [noAttempts], 0
+ INVOKE    DestroyWindow, hWndX1   ; Destroy the first 'X' window
+ INVOKE    DestroyWindow, hWndX2   ; Destroy the second 'X' window
+ INVOKE    DestroyWindow, hWndX3   ; Destroy the third 'X' window
+ ret
+clear_attempts ENDP
