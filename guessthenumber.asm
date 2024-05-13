@@ -65,6 +65,7 @@ IDM_OPTIONS_EXPLAINHC equ 3
  attemptsText DB "Attempts",0
  scoreText    DB "Score:",0
  playerScore  DD 0       ; How many numbers the player guessed correctly
+ hcToggle     DW 0
 
 ; Text to display on the buttons
   MsgText       DB          "1",0
@@ -512,5 +513,18 @@ newWinningNumber PROC   ; Generates a new pseudorandom number and stores in [win
  mov [winningNumber], eax
  ret
 newWinningNumber ENDP
+
+resetScoreHC PROC       ; If player guesses 3 wrong, resets their score if they are on HC mode
+cmp hcToggle, 1
+je resetScore           ; If hcToggle==1, Reset score
+jne go_back             ; Else we do nothing and return
+
+resetScore:
+ mov [playerScore], 0
+ jmp go_back
+
+go_back:
+ ret
+resetScoreHC ENDP
 
 END start

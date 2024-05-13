@@ -119,6 +119,16 @@ newGame:
  INVOKE    DestroyWindow, hWndX1   ; Destroy the first 'X' window
  INVOKE    DestroyWindow, hWndX2   ; Destroy the second 'X' window
  INVOKE    DestroyWindow, hWndX3   ; Destroy the third 'X' window
+ cmp hardcoreON, 1
+ je hcON
+ jne hcOFF
+
+hcON:
+ call clear_score
+ mov eax, 1
+ jmp go_back
+ 
+hcOFF:
  mov eax, 1         ; We check if eax=1 in the main code file to determine if we need a new random number.
  jmp go_back 
 
