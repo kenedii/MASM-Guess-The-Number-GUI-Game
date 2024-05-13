@@ -16,7 +16,6 @@ cdTXSize1    EQU  30           ; Constant double X-size of the subwindow for the
 cdTYSize1    EQU  30           ; Constant double Y-size of the subwindow for the text
 
 scoreXPos     EQU  360          ; Constant double X-Position subwindow for the text
-scoreTXSize1    EQU  30           ; Constant double X-size of the subwindow for the text 
 
 .data
 wc1            WNDCLASSEX  <>
@@ -68,7 +67,7 @@ PrngGet PROC range:DWORD             ; Generate a pseudo-random number in range 
 
 PrngGet ENDP
 
-to_string PROC                ; Convert a decimal to ascii, result in eax
+to_string PROC                ; Convert a decimal to ascii
  mov ebx, 10
  xor ecx, ecx
 
@@ -158,7 +157,7 @@ clear_attempts ENDP
 
 display_scoreI PROC hanWin:HWND    ; call this first to initialize the score to 0
  INVOKE    CreateWindowEx, cdSubType1, ADDR szStatic1, addr playersScoreA, cdVCarText1,\ 
-                  scoreXPos, cdTYPos1, scoreTXSize1, cdTYSize1, hanWin,\
+                  scoreXPos, cdTYPos1, cdTXSize1, cdTYSize1, hanWin,\
                   500, wc1.hInstance, NULL                         ; Display the user's score
  mov scoreHandle, eax              ; Move the handle for the score subwindow to memory
  ret

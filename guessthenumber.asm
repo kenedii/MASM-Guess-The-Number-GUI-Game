@@ -42,6 +42,11 @@ cdTYPoss     EQU  170          ; Constant double Y-Position subwindow for the te
 cdTXSizes    EQU  50; Constant double X-size of the subwindow for the text
 cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the text
 
+; Constants for Menu Options
+IDM_OPTIONS_NORMAL equ 0
+IDM_OPTIONS_HARD equ 1
+IDM_OPTIONS_HTP equ 2
+IDM_OPTIONS_EXPLAINHC equ 3
 
 .DATA
   szStatic      DB          "STATIC", 0
@@ -72,6 +77,13 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
   MsgText8      DB          "8",0
   MsgText9      DB          "9",0
   MsgText10      DB          "10",0
+
+; Text to display on the GameMode/Help Menus
+  NormalString   db "&Normal",0
+  HardString     db "&HardCore",0
+  gamemodeString db "&Game Mode",0
+  helpString     db "&Help",0
+  howtoplayString db "&How to Play",0
     
 
 .DATA?
@@ -86,6 +98,11 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
   hButton8    DD ?
   hButton9    DD ?
   hButton10   DD ?
+
+  ; GameMode/Help Menu variables
+  hMenubar HMENU ?
+  hMenuGameMode HMENU ?
+  hMenuHelp HMENU ?
 
  winningNumber DD ?
 
@@ -429,7 +446,28 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
         push hWin
         call display_scoreI ; Create score subwindow, initialize at zero.
 
+        ; Initialize the GameMode/Help menus
+        
+        ; Create menu
+        invoke CreateMenu
+	  mov hMenubar, eax
+        ; Create sub menus
+        invoke CreateMenu
+	  mov hMenuGameMode, eax
+        invoke CreateMenu
+        mov hMenuHelp, eax
+        
+        invoke AppendMenuA, hMenubar, MF_POPUP, hMenuGameMode, addr gamemodeString ; Display 'GameMode' in menu
+        invoke AppendMenuA, hMenuGameMode, MF_STRING, IDM_OPTIONS_NORMAL, ADDR NormalString
+	  invoke AppendMenuA, hMenuGameMode, MF_STRING, IDM_OPTIONS_HARD, ADDR HardString
+        invoke CheckMenuRadioItem, hMenuGameMode, IDM_OPTIONS_NORMAL, IDM_OPTIONS_HARD, MF_BYCOMMAND
+        
+        invoke AppendMenuA, hMenubar, MF_POPUP, hMenuHelp, addr helpString ; Display 'Help' in menu 
+        invoke AppendMenuA, hMenuHelp, MF_STRING, IDM_OPTIONS_NORMAL, ADDR howtoplayString
+	  invoke AppendMenuA, hMenuHelp, MF_STRING, IDM_OPTIONS_HARD, ADDR HardString
 
+        INVOKE SetMenu, hWin, hMenubar ; Set menu
+        
     .elseif   uMsg == WM_DESTROY
         invoke    DeleteObject,vdTNRoman     ; delete the font
         invoke    PostQuitMessage,NULL
