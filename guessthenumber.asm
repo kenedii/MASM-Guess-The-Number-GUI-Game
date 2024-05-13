@@ -39,7 +39,7 @@ cdSubType   EQU  NULL         ; Subwindow type (flat-NULL, 3D-1, etc.)
 ; 'Score' Text subwindow
 cdTXPoss     EQU  310           ; Constant double X-Position subwindow for the text 
 cdTYPoss     EQU  170          ; Constant double Y-Position subwindow for the text 
-cdTXSizes    EQU  60; Constant double X-size of the subwindow for the text
+cdTXSizes    EQU  50; Constant double X-size of the subwindow for the text
 cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the text
 
 
@@ -58,7 +58,8 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
   rct           RECT        <NULL, NULL, NULL, NULL>
 
  attemptsText DB "Attempts",0
- scoreText    DB "Score",0
+ scoreText    DB "Score:",0
+ playerScore  DD 0       ; How many numbers the player guessed correctly
 
 ; Text to display on the buttons
   MsgText       DB          "1",0
@@ -86,7 +87,7 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
   hButton9    DD ?
   hButton10   DD ?
 
-  winningNumber DD ?
+ winningNumber DD ?
 
 .CODE
   start:
@@ -95,9 +96,7 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
     INVOKE    GetCommandLine
     MOV       CommandLine, EAX
 
-    push 9
-    call PrngGet
-    mov [winningNumber], eax
+    call newWinningNumber ; Generates a new pseudorandom number and stores in [winningNumber]
 
     INVOKE    WinMain, wc.hInstance, NULL, CommandLine, SW_SHOWDEFAULT
     INVOKE    ExitProcess, EAX
@@ -162,53 +161,151 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
     .if       uMsg == WM_COMMAND
         .if       wParam == idBtnMensa             ; If the first button is pressed
             .if winningNumber == 0
+                 add playerScore, 1                ; Increment player's score by 1
+                 push playerScore
+                 call display_score                ; Update the player's score if they win
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call clear_attempts               ; Reset the users attempts when they win
+                 call newWinningNumber
+            .else                                  ; If winningNumber is not 0
+                 invoke increment_attempts, hWin
+                 .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call newWinningNumber
+                 .endif
             .endif
             
         .elseif   wParam == idBtnMensa+1           ; Check for the second button
             .if winningNumber == 1
+                 add playerScore, 1                ; Increment player's score by 1
+                 push playerScore
+                 call display_score
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call clear_attempts
+                 call newWinningNumber
+            .else                                  ; If winningNumber is not 1
+                 invoke increment_attempts, hWin
+                 .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call newWinningNumber
+                 .endif
             .endif
         .elseif   wParam == idBtnMensa+2           
             .if winningNumber == 2
+                 add playerScore, 1                ; Increment player's score by 1
+                 push playerScore
+                 call display_score
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call clear_attempts
+                 call newWinningNumber
+            .else                                  
+                 invoke increment_attempts, hWin
+                 .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call newWinningNumber
+                 .endif
             .endif
         .elseif   wParam == idBtnMensa+3           
             .if winningNumber == 3
+                 add playerScore, 1                ; Increment player's score by 1
+                 push playerScore
+                 call display_score
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call clear_attempts
+                 call newWinningNumber
+            .else                                  
+                 invoke increment_attempts, hWin
+                 .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call newWinningNumber
+                 .endif
             .endif
         .elseif   wParam == idBtnMensa+4           
             .if winningNumber == 4
+                 add playerScore, 1                ; Increment player's score by 1
+                 push playerScore
+                 call display_score
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call clear_attempts
+                 call newWinningNumber
+            .else                                  
+                 invoke increment_attempts, hWin
+                 .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call newWinningNumber
+                 .endif
             .endif
         .elseif   wParam == idBtnMensa+5           
             .if winningNumber == 5
+                 add playerScore, 1                ; Increment player's score by 1
+                 push playerScore
+                 call display_score
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call clear_attempts
+                 call newWinningNumber
+            .else                                 
+                 invoke increment_attempts, hWin
+                 .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call newWinningNumber
+                 .endif
             .endif
         .elseif   wParam == idBtnMensa+6           
             .if winningNumber == 6
+                 add playerScore, 1                ; Increment player's score by 1
+                 push playerScore
+                 call display_score
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call clear_attempts
+                 call newWinningNumber
+            .else                                  
+                 invoke increment_attempts, hWin
+                 .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call newWinningNumber
+                 .endif
             .endif
         .elseif   wParam == idBtnMensa+7           
             .if winningNumber == 7
+                 add playerScore, 1                ; Increment player's score by 1
+                 push playerScore
+                 call display_score
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call clear_attempts
+                 call newWinningNumber
+            .else                                  
+                 invoke increment_attempts, hWin
+                 .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call newWinningNumber
+                 .endif
             .endif
         .elseif   wParam == idBtnMensa+8           
             .if winningNumber == 8
+                 add playerScore, 1                ; Increment player's score by 1
+                 push playerScore
+                 call display_score
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call clear_attempts
+                 call newWinningNumber
+            .else                                  
+                 invoke increment_attempts, hWin
+                 .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call newWinningNumber
+                 .endif
             .endif
         .elseif   wParam == idBtnMensa+9             ; Last button check (For number 10)           
             .if winningNumber == 9
+                 add playerScore, 1                ; Increment player's score by 1
+                 push playerScore
+                 call display_score
                  invoke    MessageBox,hWin,ADDR winMsg1,ADDR winMsgHeader,MB_OK
+                 call clear_attempts
+                 call newWinningNumber
+            .else                                  
+                 invoke increment_attempts, hWin
+                 .if eax == 1 ; If eax is 1 (indicating a new winning number is needed as player lost)
+                    call newWinningNumber
+                 .endif
             .endif
-        
 
 
         .endif
         
     .elseif   uMsg == WM_CREATE
-        invoke    MakeFont,38,8,700,FALSE,ADDR szTNRoman
-        mov       vdTNRoman, eax    ; <<<<<< DELETE this font on EXIT
+                                                                    
                                              ; Create the first button
         invoke    CreateWindowEx,WS_EX_LEFT,
                           ADDR ButtonClass,
@@ -324,10 +421,13 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
                   cdTXPos, cdTYPos, cdTXSize, cdTYSize, hWin,\
                   500, wc.hInstance, NULL
 
-        ; Create the subwindow for the text (Attempts)
+        ; Create the subwindow for the text (Score)
         INVOKE    CreateWindowEx, cdSubType, ADDR szStatic, ADDR scoreText, cdVCarText,\ 
                   cdTXPoss, cdTYPoss, cdTXSizes, cdTYSizes, hWin,\
                   500, wc.hInstance, NULL
+
+        push hWin
+        call display_scoreI ; Create score subwindow, initialize at zero.
 
 
     .elseif   uMsg == WM_DESTROY
@@ -339,15 +439,11 @@ cdTYSizes    EQU  40           ; Constant double Y-size of the subwindow for the
     ret
   WndProc endp
 
-  MakeFont proc hgt:DWORD,wid:DWORD,weight:DWORD,italic:DWORD,lpFontName:DWORD
-    ; Purpose: Creates the font
-    ; Input  : hgt:DWORD,wid:DWORD,weight:DWORD,italic:DWORD,lpFontName:DWORD
-    ; Output : None
-    ; Destroy: None
-    invoke CreateFont,hgt,wid,NULL,NULL,weight,italic,NULL,NULL,
-                      DEFAULT_CHARSET,OUT_TT_PRECIS,CLIP_DEFAULT_PRECIS,
-                      PROOF_QUALITY,DEFAULT_PITCH or FF_DONTCARE,
-                      lpFontName
-    ret
-  MakeFont endp
+newWinningNumber PROC   ; Generates a new pseudorandom number and stores in [winningNumber]
+ push 9
+ call PrngGet
+ mov [winningNumber], eax
+ ret
+newWinningNumber ENDP
+
 END start
